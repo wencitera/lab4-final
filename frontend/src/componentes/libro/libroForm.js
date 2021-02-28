@@ -1,15 +1,19 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Container, Form, Navbar } from 'react-bootstrap';
-import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
 import { useHistory, useParams } from 'react-router-dom';
 
 export function LibroForm() {
 
-    const {id} = useParams()
+    const { id } = useParams()
     const [listaEditoriales, setListaEditoriales] = useState([])
     const [listaAutores, setListaAutores] = useState([])
     const history = useHistory()
+    const [editorial, setEditorial] = useState({
+        idEditorial: '',
+        nombre: ''
+    })
+
 
     const [libro, setLibro] = useState({
         idLibro: '',
@@ -31,10 +35,10 @@ export function LibroForm() {
             .then((response) => setListaAutores(response.data))
             .catch((error) => alert(error))
 
-        if(id){
+        if (id) {
             axios.get(`http://localhost:5000/libros/${id}`)
-            .then((response) => setLibro(response.data))
-            .catch((error) => alert(error))
+                .then((response) => setLibro(response.data))
+                .catch((error) => alert(error))
         }
     }, [])
 
@@ -43,53 +47,55 @@ export function LibroForm() {
         event.stopPropagation()
 
         var msgAlert = 'Falta completar:';
-        if(libro.titulo === '' || !libro.titulo) 
-        {
+        if (libro.titulo === '' || !libro.titulo) {
             alert(`${msgAlert} Titulo`)
             return;
         }
 
-        if(libro.cantidadHojas === '' || !libro.cantidadHojas)
-        {
+        if (libro.cantidadHojas === '' || !libro.cantidadHojas) {
             alert(`${msgAlert} Cantidad de Hojas`)
             return;
         }
 
-        if(libro.idEditorial === '' || !libro.idEditorial)
-        {
+        if (libro.idEditorial === '' || !libro.idEditorial) {
             alert(`${msgAlert} Editorial`)
             return;
         }
 
-        if(libro.tema === '' || !libro.tema)
-        {
+        if (libro.tema === '' || !libro.tema) {
             alert(`${msgAlert} Tema`)
             return;
         }
 
-        if(libro.anoEdicion === '' || !libro.anoEdicion)
-        {
+        if (libro.anoEdicion === '' || !libro.anoEdicion) {
             alert(`${msgAlert} Año de Edicion`)
             return;
         }
 
-        if(libro.formato === '' || !libro.formato)
-        {
+        if (libro.formato === '' || !libro.formato) {
             alert(`${msgAlert} Formato`)
             return;
         }
 
-        if(libro.idAutor.length === 0)
-        {
+        if (libro.idAutor.length === 0) {
             alert(`${msgAlert} Autor(es)`)
             return;
         }
 
-        axios.post("http://localhost:5000/libros/", libro)
-            .then(() => {
-                alert("se ha agregado el registro")
-                history.push("/libros/")
-            }).catch(error => alert(error))
+        if (!id) {
+            axios.post("http://localhost:5000/libros/", libro)
+                .then(() => {
+                    alert("se ha agregado el registro")
+                    history.push("/libros/")
+                }).catch(error => alert(error))
+        } else {
+            axios.put(`http://localhost:5000/libros/${id}`, libro)
+                .then(() => {
+                    alert("Se ha modificado el registro")
+                    history.push("/libros/")
+                }).catch(error => alert(error))
+        }
+
     }
 
     function handleOnChange(event, campo) {
@@ -114,10 +120,34 @@ export function LibroForm() {
         })
     }
 
+    function handleModificarAutor(id){
+        var autoresId = libro.idAutor;
+        if(autoresId.includes(id)){
+            autoresId = autoresId.split(`,${id}`).join('')
+        }else
+        {
+            autoresId += `,${id}`
+        }
+        console.log(autoresId)
+        setLibro({
+            ...libro,
+            idAutor: autoresId
+        })
+    }
+
+    function getEditorial(idE) {
+        axios.get(`http://localhost:5000/libros/${idE}`)
+            .then((response) => {
+                setEditorial(response.data)
+
+            })
+            .catch((error) => alert(error))
+    }
+
 
     return (
         <Container>
-             <Navbar bg="primary" variant="dark">
+            <Navbar bg="primary" variant="dark">
                 {!id && <Navbar.Brand>Crear nuevo libro</Navbar.Brand>}
                 {id && <Navbar.Brand>Modificar Libro</Navbar.Brand>}
             </Navbar>
@@ -136,7 +166,7 @@ export function LibroForm() {
                     <Form.Label>Editorial *</Form.Label>
                     <Form.Control as="select" onChange={(event) => handleOnChange(event, 'idEditorial')}>
                         {!id && <option key={0} value="">Seleccione</option>}
-                        {id && <option key={0} value={libro.idEditorial}>ACA HAY Q HACER UN GET EDITORIAL/ID</option>}
+                        {id && <option key={0} value={libro.idEditorial}>{() => getEditorial(libro.idEditorial)}</option>}
                         {
                             listaEditoriales.map(element =>
                                 <option key={element.idEditorial} value={element.idEditorial}>{element.nombre}</option>
@@ -157,21 +187,27 @@ export function LibroForm() {
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Formato *</Form.Label>
-                    {!id && <Form.Control type="text" placeholder="Tapa dura, ebook, etc" onChange={(event) => handleOnChange(event, 'formato')} />}
+                    {!id && <Form.Control type="text" placeholder="Tapa dura, ebook" onChange={(event) => handleOnChange(event, 'formato')} />}
                     {id && <Form.Control type="text" value={libro.formato} onChange={(event) => handleOnChange(event, 'formato')} />}
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Autores *</Form.Label>
-                    {listaAutores.map((autor) => (
+                    {!id && listaAutores.map((autor) => (
                         <Form.Check
                             label={`${autor.apellido}, ${autor.nombre}`}
                             onChange={() => handleOnChangeAutor(autor.idAutor)}
                         />
                     ))}
+                    {id && listaAutores.map((autor) => (
+                        <Form.Check
+                            label={`${autor.apellido}, ${autor.nombre}`}
+                            onChange={() => handleModificarAutor(autor.idAutor)}
+                        />
+                    ))}
                 </Form.Group>
-                {!id &&<Button type="submit" variant="success">Confirmar</Button>}&nbsp;
-                {id &&<Button type="submit" variant="success">Modificar</Button>}&nbsp;
+                {!id && <Button type="submit" variant="success">Confirmar</Button>}&nbsp;
+                {id && <Button type="submit" variant="success">Modificar</Button>}&nbsp;
                 <Button onClick={() => history.push("/vehiculos")} variant="danger">Cancelar</Button>
             </Form>
         </Container>

@@ -40,7 +40,7 @@ export function LibroList() {
                     <Button variant="outline-light">Search</Button>
                 </Form>
             </Navbar>
-            <Table size="sm" striped bordered hover>
+            <Table striped bordered hover>
                 {listaLibros.length > 0 &&
                     <thead>
                         <tr>
@@ -58,15 +58,14 @@ export function LibroList() {
                     <tbody>{
                         listaLibros.map(item => (
                             <tr key={item.idLibro}>
-                                <td>{item.titulo}</td>
+                                <td><Nav.Link href={`/libros/detalles/${item.idLibro}`}>{item.titulo}</Nav.Link></td>
                                 <td>{item.cantidadHojas}</td>
                                 <td>{item.anoEdicion}</td>
                                 <td>{item.idEditorial}</td>
                                 <td>{item.formato}</td>
                                 <th>
-                                    <Button size="sm" href={`/libros/detalles/${item.idLibro}`} variant="info">🔍</Button>{' '}
-                                    <Button size="sm" href={`/libros/${item.idLibro}`} variant="warning">✏️</Button>{' '}
-                                    <Button size="sm" onClick={() => borrar(item.idLibro)} variant="danger">❌</Button>
+                                    <Button href={`/libros/${item.idLibro}`} variant="warning">Modificar</Button>{' '}
+                                    <Button onClick={() => borrar(item.idLibro)} variant="danger">Eliminar</Button>
                                 </th>
                             </tr>
                         ))}

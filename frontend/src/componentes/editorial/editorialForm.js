@@ -36,11 +36,21 @@ export function EditorialForm() {
             return;
         }
 
-        axios.post("http://localhost:5000/editoriales/", editorial)
+        if(!id)
+        {
+            axios.post("http://localhost:5000/editoriales/", editorial)
             .then(() => {
                 alert("Se ha agregado el registro")
                 history.push("/editoriales/")
             }).catch(error => alert(error))
+        }else
+        {
+            axios.put(`http://localhost:5000/editoriales/${id}`, editorial)
+            .then(() => {
+                alert("Se ha modificado el registro")
+                history.push("/editoriales/")
+            }).catch(error => alert(error))
+        }
     }
 
     return (

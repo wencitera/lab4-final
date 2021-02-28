@@ -41,11 +41,20 @@ export function AutorForm() {
             return;
         }
 
-        axios.post("http://localhost:5000/autores/", autor)
+        if(!id){
+            axios.post("http://localhost:5000/autores/", autor)
             .then(() => {
                 alert("Se ha agregado el registro")
                 history.push("/autores/")
             }).catch(error => alert(error))
+        }
+        else{
+            axios.put(`http://localhost:5000/autores/${id}`, autor)
+            .then(() => {
+                alert("Se ha modificado el registro")
+                history.push("/autores/")
+            }).catch(error => alert(error))
+        }
     }
 
     return (
