@@ -40,7 +40,7 @@ class EditorialesResource(Resource):
         editorial = repo.add(data)
         if editorial:
             return editorial, 201
-        abort(500)
+        return 'Editorial ya existente', 400
 
 @nsEditorial.route('/<int:id>')
 class EditorialResource(Resource):

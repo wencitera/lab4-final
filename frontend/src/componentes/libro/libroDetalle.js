@@ -20,7 +20,7 @@ export function LibroDetalle() {
     const history = useHistory()
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/libros/${id}`)
+        axios.get(`http://localhost:5000/librosdetalles/${id}`)
             .then((response) => setLibro(response.data))
             .catch((error) => alert(error))
         
@@ -52,7 +52,7 @@ export function LibroDetalle() {
                     <ListGroupItem>Cantidad de Hojas: <b>{libro.cantidadHojas}</b></ListGroupItem>
                     <ListGroupItem>Formato: <b>{libro.formato}</b></ListGroupItem>
                     <ListGroupItem>Temas: <b>{libro.tema}</b></ListGroupItem>
-                    <ListGroupItem>Editorial: <b>{() => getEditorial(libro.idEditorial)}</b></ListGroupItem>
+                    <ListGroupItem>Editorial: <b>{libro.idEditorial}</b></ListGroupItem>
                     <ListGroupItem>Autores: {libro.idAutor}</ListGroupItem>
                 </ListGroup>
             </Card>

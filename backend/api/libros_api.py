@@ -22,8 +22,22 @@ modeloLibro = modeloLibroSinId.clone('Libro',{
      'idLibro': fields.Integer(),
 })
 
+modeloLibroMostrar = Model('LibroMostrar', {
+    'titulo' : fields.String(),
+    'cantidadHojas': fields.Integer(),
+    'anoEdicion': fields.Date(),
+    'tema': fields.String(),
+    'formato': fields.String(),
+    'idEditorial': fields.String(),
+    'idAutor': fields.String(),
+    'idLibro': fields.Integer(),   
+
+})
+
+
 nsLibro.models[modeloLibro.name] = modeloLibro
 nsLibro.models[modeloLibroSinId.name] = modeloLibroSinId
+nsLibro.models[modeloLibroMostrar.name] = modeloLibroMostrar
 
 
 nuevoLibroParse = reqparse.RequestParser(bundle_errors=True)
@@ -42,7 +56,7 @@ editarLibroParse.add_argument('idLibro', type=int)
 
 @nsLibro.route('/')
 class LibrosResource(Resource):
-    @nsLibro.marshal_list_with(modeloLibro)
+    @nsLibro.marshal_list_with(modeloLibroMostrar)
     def get(self):
         return repo.get_all()
 
@@ -94,4 +108,11 @@ class LibroBuscarTitulo(Resource):
     @nsLibro.marshal_with(modeloLibro)
     def get(self,tema):
         return repo.buscar_tema(tema)
+
+#detalles
+@nsLibro.route('detalles/<id>')
+class LibrosDetalles(Resource):
+    @nsLibro.marshal_with(modeloLibroMostrar)
+    def get(self,id):
+        return repo.get_by_id_detalles(id)        
        
