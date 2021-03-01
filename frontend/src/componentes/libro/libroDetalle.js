@@ -1,11 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Card, Container, ListGroup, ListGroupItem, Navbar, Button, Form, FormControl } from 'react-bootstrap';
-import { useHistory, useParams } from 'react-router-dom'
+import { Card, Container, ListGroup, ListGroupItem, Navbar, Button, Form } from 'react-bootstrap';
+import { useParams } from 'react-router-dom'
 
 export function LibroDetalle() {
 
-    const [editorial, setEditorial] = useState()
     const [libro, setLibro] = useState({
         idLibro: '',
         titulo: '',
@@ -17,7 +16,6 @@ export function LibroDetalle() {
         idAutor: ''
     })
     const { id } = useParams()
-    const history = useHistory()
 
     useEffect(() => {
         axios.get(`http://localhost:5000/librosdetalles/${id}`)
@@ -26,14 +24,6 @@ export function LibroDetalle() {
         
     }, [])
 
-    function getEditorial(ide)
-    {
-        axios.get(`http://localhost:5000/editoriales/${libro.idEditorial}`)
-            .then((response) => {setEditorial(response.data)
-            return editorial.nombre
-        })
-            .catch((error) => alert(error))
-    }
     return (
         <Container>
             <Navbar bg="primary" variant="dark">
@@ -53,7 +43,7 @@ export function LibroDetalle() {
                     <ListGroupItem>Formato: <b>{libro.formato}</b></ListGroupItem>
                     <ListGroupItem>Temas: <b>{libro.tema}</b></ListGroupItem>
                     <ListGroupItem>Editorial: <b>{libro.idEditorial}</b></ListGroupItem>
-                    <ListGroupItem>Autores: {libro.idAutor}</ListGroupItem>
+                    <ListGroupItem>Autores: <i>{libro.idAutor}</i></ListGroupItem>
                 </ListGroup>
             </Card>
         </Container>
