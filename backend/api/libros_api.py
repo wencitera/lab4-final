@@ -92,20 +92,20 @@ class LibroResource(Resource):
 
 @nsLibro.route('titulo/<titulo>')
 class LibroBuscarTitulo(Resource):
-    @nsLibro.marshal_with(modeloLibro)
+    @nsLibro.marshal_with(modeloLibroMostrar)
     def get(self,titulo):
         return repo.buscar_titulo(titulo)
 
 @nsLibro.route('editorial/<editorial>')
 class LibroBuscarTitulo(Resource):
-    @nsLibro.marshal_with(modeloLibro)
+    @nsLibro.marshal_with(modeloLibroMostrar)
     def get(self,editorial):
         return repo.buscar_editorial(editorial)
 
 
 @nsLibro.route('temas/<tema>')
 class LibroBuscarTitulo(Resource):
-    @nsLibro.marshal_with(modeloLibro)
+    @nsLibro.marshal_with(modeloLibroMostrar)
     def get(self,tema):
         return repo.buscar_tema(tema)
 

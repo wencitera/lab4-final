@@ -102,9 +102,26 @@ class LibroRepo():
 
     def buscar_titulo(self,titulo):
         tit = titulo.lower() 
-        encontrados = Libro.query.filter_by(titulo = tit).all()        
+        encontrados = Libro.query.filter_by(titulo = tit).all()       
+        lista=[]
+        for li in encontrados:        
+            idE = li.idEditorial
+            edi = Editorial.query.filter_by(idEditorial=idE).all()
+            for e in edi:
+                nom = e.nombre            
+            aux = {
+                'idLibro': li.idLibro,
+                'titulo' : li.titulo.title(),
+                'cantidadHojas': li.cantidadHojas,
+                'anoEdicion' : li.anoEdicion,
+                'tema' : li.tema,
+                'formato' : li.formato,
+                'idEditorial' : nom.title(),
+                'idAutor' : li.idAutor
+            }
+            lista.append(aux)        
         if encontrados:
-            return encontrados
+            return lista
         return None
         
     
@@ -113,9 +130,26 @@ class LibroRepo():
         edi = Editorial.query.filter_by(nombre=editorial).all()
         for e in edi:
             idE = e.idEditorial      
-        encontrados = Libro.query.filter_by(idEditorial=idE).all()
+            encontrados = Libro.query.filter_by(idEditorial=idE).all()        
+        lista=[]
+        for li in encontrados:        
+            idE = li.idEditorial
+            edi = Editorial.query.filter_by(idEditorial=idE).all()
+            for e in edi:
+                nom = e.nombre            
+            aux = {
+                'idLibro': li.idLibro,
+                'titulo' : li.titulo.title(),
+                'cantidadHojas': li.cantidadHojas,
+                'anoEdicion' : li.anoEdicion,
+                'tema' : li.tema,
+                'formato' : li.formato,
+                'idEditorial' : nom.title(),
+                'idAutor' : li.idAutor
+            }
+            lista.append(aux)        
         if encontrados:
-            return encontrados
+            return lista
         return None    
 
 
@@ -123,13 +157,37 @@ class LibroRepo():
     def buscar_tema(self,tema):
         tema = tema.lower()
         libros = Libro.query.all()
-        lista = []
+        lis = []
         for li in libros:
             te = li.tema
             tem = te.split(',')            
             for t in tem:               
                 if t == tema:
-                    lista.append(li)       
-        return lista
+                    lis.append(li)
+        lista=[]
+        for li in lis:        
+            idE = li.idEditorial
+            edi = Editorial.query.filter_by(idEditorial=idE).all()
+            for e in edi:
+                nom = e.nombre            
+            aux = {
+                'idLibro': li.idLibro,
+                'titulo' : li.titulo.title(),
+                'cantidadHojas': li.cantidadHojas,
+                'anoEdicion' : li.anoEdicion,
+                'tema' : li.tema,
+                'formato' : li.formato,
+                'idEditorial' : nom.title(),
+                'idAutor' : li.idAutor
+            }
+            lista.append(aux)        
+        if lista:
+            return lista
+        return None    
+
+      
 
    
+
+
+    
