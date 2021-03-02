@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Container, Navbar, Table } from 'react-bootstrap';
+import { Button, Container, Nav, Navbar, Table } from 'react-bootstrap';
 
 export function AutorList() {
 
