@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Container, Form, FormControl, Nav, Navbar, Table } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { Button, Container, Navbar, Table } from 'react-bootstrap';
 
 export function AutorList() {
 
@@ -34,10 +33,6 @@ export function AutorList() {
                 <Nav className="mr-auto">
                     <Nav.Link href="/autores/nuevo">Nuevo</Nav.Link>
                 </Nav>
-                <Form inline>
-                    <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                    <Button variant="outline-light">Search</Button>
-                </Form>
             </Navbar>
             <Table size="sm" striped bordered hover>
                 {listaAutores.length > 0 &&

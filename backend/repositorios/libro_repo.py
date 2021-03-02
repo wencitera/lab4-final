@@ -86,16 +86,16 @@ class LibroRepo():
     def update(self, id, data):
         li = Libro.query.get(id)
         titulo = data['titulo'].lower()
-        temas = data['temas'].lower()
+        temas = data['tema'].lower()
         if li:
             li.idLibro = data['idLibro']
             li.titulo = titulo
             li.cantidadHojas = data['cantidadHojas']
             li.anoEdicion = data['anoEdicion']
-            li.tema = tema
+            li.tema = temas
             li.formato = data['formato']
             li.idEditorial = data['idEditorial']
-            li.idAutor = data['idautor']
+            li.idAutor = data['idAutor']
             db.session.commit()
             return True
         return False

@@ -14,7 +14,6 @@ export function LibroForm() {
         nombre: ''
     })
 
-
     const [libro, setLibro] = useState({
         idLibro: '',
         titulo: '',
@@ -38,6 +37,10 @@ export function LibroForm() {
         if (id) {
             axios.get(`http://localhost:5000/libros/${id}`)
                 .then((response) => setLibro(response.data))
+                .catch((error) => alert(error))
+
+            axios.get(`http://localhost:5000/editoriales/${libro.idEditorial}`)
+                .then((response) => setEditorial(response.data))
                 .catch((error) => alert(error))
         }
     }, [])
@@ -120,12 +123,11 @@ export function LibroForm() {
         })
     }
 
-    function handleModificarAutor(id){
+    function handleModificarAutor(id) {
         var autoresId = libro.idAutor;
-        if(autoresId.includes(id)){
+        if (autoresId.includes(id)) {
             autoresId = autoresId.split(`,${id}`).join('')
-        }else
-        {
+        } else {
             autoresId += `,${id}`
         }
         console.log(autoresId)
@@ -135,82 +137,95 @@ export function LibroForm() {
         })
     }
 
-    function getEditorial(idE) {
-        axios.get(`http://localhost:5000/libros/${idE}`)
-            .then((response) => {
-                setEditorial(response.data)
-
-            })
-            .catch((error) => alert(error))
+    function isChecked(autores, apellido, nombre) {
+        var listaAutores = autores.split(', ')
+        //console.log(listaAutores)
+        //console.log(apellido,nombre)
+        //console.log(listaAutores.includes(`${nombre} ${apellido}`))
+        if (listaAutores.includes(`${nombre} ${apellido}`)) {
+            document.getElementById(`${apellido}-${nombre}`).checked = true;
+        } else {
+            //var checkbox = await document.getElementById(`${apellido}-${nombre}`);
+            //checkbox.checked = false;
+        }
     }
 
-
     return (
-        <Container>
-            <Navbar bg="primary" variant="dark">
-                {!id && <Navbar.Brand>Crear nuevo libro</Navbar.Brand>}
-                {id && <Navbar.Brand>Modificar Libro</Navbar.Brand>}
-            </Navbar>
-            <Form onSubmit={(event) => guardar(event)}>
-                <Form.Group>
-                    <Form.Label>Titulo *</Form.Label>
-                    {!id && <Form.Control onChange={(event) => handleOnChange(event, 'titulo')} />}
-                    {id && <Form.Control value={libro.titulo} onChange={(event) => handleOnChange(event, 'titulo')} />}
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Cantidad de Hojas *</Form.Label>
-                    {!id && <Form.Control onChange={(event) => handleOnChange(event, 'cantidadHojas')} />}
-                    {id && <Form.Control value={libro.cantidadHojas} onChange={(event) => handleOnChange(event, 'cantidadHojas')} />}
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Editorial *</Form.Label>
-                    <Form.Control as="select" onChange={(event) => handleOnChange(event, 'idEditorial')}>
-                        {!id && <option key={0} value="">Seleccione</option>}
-                        {id && <option key={0} value={libro.idEditorial}>{() => getEditorial(libro.idEditorial)}</option>}
-                        {
-                            listaEditoriales.map(element =>
-                                <option key={element.idEditorial} value={element.idEditorial}>{element.nombre}</option>
-                            )
-                        }
-                    </Form.Control>
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Temas *</Form.Label>
-                    {!id && <Form.Control type="textarea" placeholder="Aventura, Ficción, Acción" onChange={(event) => handleOnChange(event, 'tema')} />}
-                    {id && <Form.Control type="textarea" value={libro.tema} onChange={(event) => handleOnChange(event, 'tema')} />}
-                    <Form.Text className="text-muted">Ingrese temas separados por coma. Ej: Aventura, Ficción.</Form.Text>
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Año de Edicion *</Form.Label>
-                    {!id && <Form.Control type="date" onChange={(event) => handleOnChange(event, 'anoEdicion')} />}
-                    {id && <Form.Control type="date" value={libro.anoEdicion} onChange={(event) => handleOnChange(event, 'anoEdicion')} />}
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Formato *</Form.Label>
-                    {!id && <Form.Control type="text" placeholder="Tapa dura, ebook" onChange={(event) => handleOnChange(event, 'formato')} />}
-                    {id && <Form.Control type="text" value={libro.formato} onChange={(event) => handleOnChange(event, 'formato')} />}
-                </Form.Group>
+        <>
+            <Container>
 
-                <Form.Group>
-                    <Form.Label>Autores *</Form.Label>
-                    {!id && listaAutores.map((autor) => (
-                        <Form.Check
-                            label={`${autor.apellido}, ${autor.nombre}`}
-                            onChange={() => handleOnChangeAutor(autor.idAutor)}
-                        />
-                    ))}
-                    {id && listaAutores.map((autor) => (
-                        <Form.Check
-                            label={`${autor.apellido}, ${autor.nombre}`}
-                            onChange={() => handleModificarAutor(autor.idAutor)}
-                        />
-                    ))}
-                </Form.Group>
-                {!id && <Button type="submit" variant="success">Confirmar</Button>}&nbsp;
+                <Navbar bg="primary" variant="dark">
+                    {!id && <Navbar.Brand>Crear nuevo libro</Navbar.Brand>}
+                    {id && <Navbar.Brand>Modificar Libro</Navbar.Brand>}
+                </Navbar>
+                <Form onSubmit={(event) => guardar(event)}>
+                    <Form.Group>
+                        <Form.Label>Titulo *</Form.Label>
+                        {!id && <Form.Control onChange={(event) => handleOnChange(event, 'titulo')} />}
+                        {id && <Form.Control value={libro.titulo} onChange={(event) => handleOnChange(event, 'titulo')} />}
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Cantidad de Hojas *</Form.Label>
+                        {!id && <Form.Control onChange={(event) => handleOnChange(event, 'cantidadHojas')} />}
+                        {id && <Form.Control value={libro.cantidadHojas} onChange={(event) => handleOnChange(event, 'cantidadHojas')} />}
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Editorial *</Form.Label>
+                        <Form.Control as="select" onChange={(event) => handleOnChange(event, 'idEditorial')}>
+                            {
+                                listaEditoriales.map(element =>
+                                    <option key={element.idEditorial} value={element.idEditorial}>{element.nombre}</option>
+                                )
+                            }
+                            {!id && <option key={0} value="">Seleccione</option>}
+                            {id && <select key={0} value={libro.idEditorial}></select>}
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Temas *</Form.Label>
+                        {!id && <Form.Control type="textarea" placeholder="Aventura, Ficción, Acción" onChange={(event) => handleOnChange(event, 'tema')} />}
+                        {id && <Form.Control type="textarea" value={libro.tema} onChange={(event) => handleOnChange(event, 'tema')} />}
+                        <Form.Text className="text-muted">Ingrese temas separados por coma. Ej: Aventura, Ficción.</Form.Text>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Año de Edicion *</Form.Label>
+                        {!id && <Form.Control type="date" onChange={(event) => handleOnChange(event, 'anoEdicion')} />}
+                        {id && <Form.Control type="date" value={libro.anoEdicion} onChange={(event) => handleOnChange(event, 'anoEdicion')} />}
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Formato *</Form.Label>
+                        {!id && <Form.Control type="text" placeholder="Tapa dura, ebook" onChange={(event) => handleOnChange(event, 'formato')} />}
+                        {id && <Form.Control type="text" value={libro.formato} onChange={(event) => handleOnChange(event, 'formato')} />}
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label>Autores *</Form.Label>
+                        {!id && listaAutores.map((autor) => (
+                            <Form.Check
+                                label={`${autor.apellido}, ${autor.nombre}`}
+                                onChange={() => handleOnChangeAutor(autor.idAutor)}
+                            />
+                        ))}
+                        {id && <Form.Control type="text" value={libro.idAutor} readOnly/>}
+                        {id &&
+                        listaAutores.map((autor) => (
+                            <>
+                                
+                                <Form.Check
+                                    label={`(${autor.idAutor}) ${autor.apellido}, ${autor.nombre}`}
+                                    onChange={() => handleModificarAutor(autor.idAutor)}
+                                    id={`${autor.apellido}-${autor.nombre}`}
+                                    onLoad={() => isChecked(libro.idAutor, autor.apellido, autor.nombre)}
+                                />
+                            </>
+                        ))}
+                    </Form.Group>
+                    {!id && <Button type="submit" variant="success">Confirmar</Button>}&nbsp;
                 {id && <Button type="submit" variant="success">Modificar</Button>}&nbsp;
                 <Button onClick={() => history.push("/vehiculos")} variant="danger">Cancelar</Button>
-            </Form>
-        </Container>
+                </Form>
+            </Container>
+        </>
     );
 
 

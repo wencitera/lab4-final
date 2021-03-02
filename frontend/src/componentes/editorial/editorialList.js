@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Container, Form, FormControl, Nav, Navbar, Table } from 'react-bootstrap';
-import { useHistory} from 'react-router-dom';
+import { Button, Container, Nav, Navbar, Table } from 'react-bootstrap';
 
 export function EditorialList() {
 
@@ -17,7 +16,7 @@ export function EditorialList() {
             alert("Registro borrado correctamente")
             getEditoriales()
           })
-          .catch(error => alert(error))
+          .catch(() => alert("No se puede borrar, esta editorial esta en uso"))
           
       }
     function getEditoriales(){
@@ -32,10 +31,6 @@ export function EditorialList() {
                 <Nav className="mr-auto">
                     <Nav.Link href="/editoriales/nuevo">Nuevo</Nav.Link>
                 </Nav>
-                <Form inline>
-                    <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                    <Button variant="outline-light">Search</Button>
-                </Form>
             </Navbar>
             <Table size="sm" striped bordered hover>
                 {listaEditoriales.length > 0 &&
