@@ -10,7 +10,7 @@ from api.libros_api import nsLibro
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:admin@localhost/lab4Libros"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:Gordo1357@localhost/lab4Libros"
 CORS(app)
 db.init_app(app)
 

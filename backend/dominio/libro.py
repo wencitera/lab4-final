@@ -3,6 +3,7 @@ from datos import db
 from sqlalchemy.orm import relationship
 from dominio.autor import Autor
 from dominio.editorial import Editorial
+from dominio.formato import Formato
 
 class Libro(db.Model):
     __tablename__ = 'libros'
@@ -11,7 +12,8 @@ class Libro(db.Model):
     cantidadHojas = Column(Integer, nullable=False)
     anoEdicion = Column(Date, nullable=False)
     tema =  Column(String(150), nullable=False)
-    formato = Column(String(30), nullable=False)    
+    idFormato = Column(Integer(), ForeignKey('formatos.idFormatos'), nullable=False)
+    formato = relationship('Formato')
     idEditorial = Column(Integer(), ForeignKey('editoriales.idEditorial'), nullable=False)    
     editorial = relationship('Editorial')
     idAutor =  Column(String(150), nullable=False)

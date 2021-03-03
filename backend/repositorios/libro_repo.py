@@ -59,9 +59,7 @@ class LibroRepo():
         for e in edi:
              nom = e.nombre 
         autores=''
-        print(autor)
         for a in autor:
-            print(a)
             if a == '':
                 aux=0
             else:
@@ -79,7 +77,6 @@ class LibroRepo():
             'idEditorial' : nom.title(),
             'idAutor' : autores
             }
-        print(aux)
         lista.append(aux)
         return aux
 
