@@ -8,6 +8,10 @@ from api.autor_api import nsAutor
 from api.editorial_api import nsEditorial
 from api.libros_api import nsLibro
 from api.formato_api import nsFormato
+<<<<<<< HEAD
+=======
+
+>>>>>>> b658acd333770fc5ad0cf899c2bfdac843b5c5ec
 
 
 app = Flask(__name__)
