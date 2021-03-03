@@ -28,7 +28,19 @@ class LibroRepo():
         return lista
        
     def add(self, data):
-        libro = Libro(**data)
+        titulo = data["titulo"]
+        tema = data ["tema"]
+        aux = {
+                'titulo' : titulo.lower(),
+                'cantidadHojas': data["cantidadHojas"],
+                'anoEdicion' : data["anoEdicion"],
+                'tema' : tema.lower(),
+                'formato' : data["formato"],
+                'idEditorial' : data["idEditorial"],
+                'idAutor' : data["idAutor"]
+            }
+
+        libro = Libro(**aux)
         db.session.add(libro)
         db.session.commit()
         return libro
@@ -162,7 +174,7 @@ class LibroRepo():
             te = li.tema
             tem = te.split(',')            
             for t in tem:               
-                if t == tema:
+                if t.lower() == tema:
                     lis.append(li)
         lista=[]
         for li in lis:        

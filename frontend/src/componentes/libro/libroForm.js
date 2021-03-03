@@ -114,7 +114,7 @@ export function LibroForm() {
             idAutor: autoresId
         })
     }
-
+/* 
     function handleModificarAutor(id) {
         var autoresId = libro.idAutor;
         if (autoresId.includes(id)) {
@@ -126,7 +126,7 @@ export function LibroForm() {
             ...libro,
             idAutor: autoresId
         })
-    }
+    } */
 
 
     return (
@@ -185,18 +185,18 @@ export function LibroForm() {
                                 onChange={() => handleOnChangeAutor(autor.idAutor)}
                             />
                         ))}
-                        {id && <Form.Control type="text" value={libro.idAutor} readOnly/>}
+                        {id && <Form.Control type="text" value={libro.idAutor} readOnly />}
                         {id &&
-                        listaAutores.map((autor) => (
-                            <>
-                                
-                                <Form.Check
-                                    label={`(${autor.idAutor}) ${autor.apellido}, ${autor.nombre}`}
-                                    onChange={() => handleModificarAutor(autor.idAutor)}
-                                    id={`${autor.apellido}-${autor.nombre}`}
-                                />
-                            </>
-                        ))}
+                            listaAutores.map((autor) => (
+                                <>
+
+                                    <Form.Check
+                                        label={`(${autor.idAutor}) ${autor.apellido}, ${autor.nombre}`}
+                                        onChange={() => handleOnChangeAutor(autor.idAutor)}
+                                        id={`${autor.apellido}-${autor.nombre}`}
+                                    />
+                                </>
+                            ))}
                     </Form.Group>
                     {!id && <Button type="submit" variant="success">Confirmar</Button>}&nbsp;
                 {id && <Button type="submit" variant="success">Modificar</Button>}&nbsp;

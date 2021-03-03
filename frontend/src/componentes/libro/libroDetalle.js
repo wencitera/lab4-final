@@ -43,7 +43,7 @@ export function LibroDetalle() {
                     <ListGroupItem>Formato: <b>{libro.formato}</b></ListGroupItem>
                     <ListGroupItem>Temas: <b>{libro.tema}</b></ListGroupItem>
                     <ListGroupItem>Editorial: <b>{libro.idEditorial}</b></ListGroupItem>
-                    <ListGroupItem>Autores: <i>{libro.idAutor}</i></ListGroupItem>
+                    <ListGroupItem>Autores: <b>{libro.idAutor}</b></ListGroupItem>
                 </ListGroup>
             </Card>
         </Container>
