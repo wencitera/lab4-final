@@ -11,7 +11,7 @@ modeloLibroSinId = Model('LibroSinId', {
     'cantidadHojas': fields.Integer(),
     'anoEdicion': fields.Date(),
     'tema': fields.String(),
-    'formato': fields.String(),
+    'formato': fields.Integer(),
     'idEditorial': fields.Integer(),
     'idAutor': fields.String(),
    
@@ -27,7 +27,7 @@ modeloLibroMostrar = Model('LibroMostrar', {
     'cantidadHojas': fields.Integer(),
     'anoEdicion': fields.Date(),
     'tema': fields.String(),
-    'formato': fields.String(),
+    'formato': fields.Integer(),
     'idEditorial': fields.String(),
     'idAutor': fields.String(),
     'idLibro': fields.Integer(),   
@@ -45,7 +45,7 @@ nuevoLibroParse.add_argument('titulo', type=str, required=True)
 nuevoLibroParse.add_argument('cantidadHojas', type=int, required=True)
 nuevoLibroParse.add_argument('anoEdicion',required=True )
 nuevoLibroParse.add_argument('tema', type=str, required=True)
-nuevoLibroParse.add_argument('formato', type=str, required=True)
+nuevoLibroParse.add_argument('formato', type=int, required=True)
 nuevoLibroParse.add_argument('idEditorial', type=int, required=True)
 nuevoLibroParse.add_argument('idAutor', type=str, required=True)
 

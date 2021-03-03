@@ -2,8 +2,6 @@ from flask import abort
 from flask_restx import Resource, Namespace, Model, fields, reqparse
 from repositorios.formato_repo import FormatoRepo
 
-
-
 repo = FormatoRepo()
 
 nsFormato = Namespace('formatos', description='Tabla de Formatos')
@@ -23,18 +21,18 @@ nsFormato.models[modeloFormatoSinId.name] = modeloFormatoSinId
 nuevoFormatoParse = reqparse.RequestParser(bundle_errors=True)
 nuevoFormatoParse.add_argument('nombre', type=str, required=True)
 
-editarFormatoParse = nuevoEditorialParse.copy()
+editarFormatoParse = nuevoFormatoParse.copy()
 editarFormatoParse.add_argument('idFormato', type=int, required=True)
 
 
-@nsEditorial.route('/')
+@nsFormato.route('/')
 class FormatosResource(Resource):
-    @nsEditorial.marshal_list_with(modeloFormato)
+    @nsFormato.marshal_list_with(modeloFormato)
     def get(self):
         return repo.get_all()
 
-    @nsEditorial.expect(modeloFormatoSinId)
-    @nsEditorial.marshal_with(modeloFormato)
+    @nsFormato.expect(modeloFormatoSinId)
+    @nsFormato.marshal_with(modeloFormato)
     def post(self):
         data = nuevoFormatoParse.parse_args()
         formato = repo.add(data)
@@ -42,9 +40,9 @@ class FormatosResource(Resource):
             return formato, 201
         return 'Formato ya existente', 400
 
-@nsEditorial.route('/<int:id>')
+@nsFormato.route('/<int:id>')
 class FormatoResource(Resource):
-    @nsEditorial.marshal_with(modeloFormato)
+    @nsFormato.marshal_with(modeloFormato)
     def get(self,id):
         formato = repo.get_by_id(id)
         if formato:
@@ -56,7 +54,7 @@ class FormatoResource(Resource):
             return 'Formato borrado', 200
         abort(400)
     
-    @nsEditorial.expect(modeloFormato)
+    @nsFormato.expect(modeloFormato)
     def put(self, id):
         data = editarFormatoParse.parse_args()
         if repo.update(id,data):

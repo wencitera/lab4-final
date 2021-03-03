@@ -2,7 +2,7 @@ from dominio.formato import Formato
 from datos import db
 import json
 
-class EditorialRepo():
+class FormatoRepo():
     def get_all(self):
         return Formato.query.all()
        
@@ -10,7 +10,7 @@ class EditorialRepo():
         formato = Formato(**data)
         db.session.add(formato)
         db.session.commit()
-        return editorial
+        return formato
     
     def get_by_id(self,id):
         return Formato.query.get(id)

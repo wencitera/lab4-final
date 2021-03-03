@@ -9,6 +9,8 @@ import { AutorList } from './componentes/autor/autorList';
 import { EditorialForm } from './componentes/editorial/editorialForm';
 import { EditorialList } from './componentes/editorial/editorialList';
 import { LibroDetalle } from './componentes/libro/libroDetalle';
+import { FormatosList } from './componentes/formato/formatoList';
+import {FormatosForm} from './componentes/formato/formatoForm';
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
             <Nav.Link href="/libros">Libros</Nav.Link>
             <Nav.Link href="/autores">Autores</Nav.Link>
             <Nav.Link href="/editoriales">Editoriales</Nav.Link>
+            <Nav.Link href="/formatos">Formatos</Nav.Link>
           </Nav>
         </Navbar>
         &nbsp;
@@ -30,6 +33,10 @@ function App() {
               <Route path="/libros/nuevo" component={LibroForm}></Route>
               <Route path="/libros/:id" component={LibroForm}></Route>
               <Route path="/libros" component={LibroList}></Route>
+
+              <Route path="/formatos/nuevo" component={FormatosForm}></Route>
+              <Route path="/formatos/:id" component={FormatosForm}></Route>
+              <Route path="/formatos" component={FormatosList}></Route>
 
               <Route path="/autores/nuevo" component={AutorForm}></Route>
               <Route path="/autores/:id" component={AutorForm}></Route>

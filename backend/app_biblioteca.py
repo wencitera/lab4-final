@@ -7,10 +7,11 @@ from datos import db
 from api.autor_api import nsAutor
 from api.editorial_api import nsEditorial
 from api.libros_api import nsLibro
+from api.formato_api import nsFormato
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:Gordo1357@localhost/lab4Libros"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:admin@localhost/lab4Libros"
 CORS(app)
 db.init_app(app)
 
@@ -23,6 +24,7 @@ api = Api(app, version='1.0.beta', title='Biblioteca', description='Administraci
 api.add_namespace(nsAutor)
 api.add_namespace(nsEditorial)
 api.add_namespace(nsLibro)
+api.add_namespace(nsFormato)
 
 
 

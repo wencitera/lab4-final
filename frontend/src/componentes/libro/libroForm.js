@@ -8,6 +8,7 @@ export function LibroForm() {
     const { id } = useParams()
     const [listaEditoriales, setListaEditoriales] = useState([])
     const [listaAutores, setListaAutores] = useState([])
+    const [listaFormatos, setListaFormatos] = useState([])
     const history = useHistory()
 
     const [libro, setLibro] = useState({
@@ -30,11 +31,17 @@ export function LibroForm() {
             .then((response) => setListaAutores(response.data))
             .catch((error) => alert(error))
 
+        axios.get("http://localhost:5000/formatos")
+            .then((response) => setListaFormatos(response.data))
+            .catch((error) => alert(error))
+
         if (id) {
             axios.get(`http://localhost:5000/libros/${id}`)
                 .then((response) => setLibro(response.data))
                 .catch((error) => alert(error))
         }
+
+
     }, [])
 
     function guardar(event) {
@@ -114,20 +121,6 @@ export function LibroForm() {
             idAutor: autoresId
         })
     }
-/* 
-    function handleModificarAutor(id) {
-        var autoresId = libro.idAutor;
-        if (autoresId.includes(id)) {
-            autoresId = autoresId.split(`,${id}`).join('')
-        } else {
-            autoresId += `,${id}`
-        }
-        setLibro({
-            ...libro,
-            idAutor: autoresId
-        })
-    } */
-
 
     return (
         <>
@@ -172,9 +165,20 @@ export function LibroForm() {
                         {id && <Form.Control type="date" value={libro.anoEdicion} onChange={(event) => handleOnChange(event, 'anoEdicion')} />}
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Formato *</Form.Label>
+                        {/* <Form.Label>Formato *</Form.Label>
                         {!id && <Form.Control type="text" placeholder="Tapa dura, ebook" onChange={(event) => handleOnChange(event, 'formato')} />}
-                        {id && <Form.Control type="text" value={libro.formato} onChange={(event) => handleOnChange(event, 'formato')} />}
+                        {id && <Form.Control type="text" value={libro.formato} onChange={(event) => handleOnChange(event, 'formato')} />} */}
+                        <Form.Label>Formato *</Form.Label>
+                        <Form.Control as="select" onChange={(event) => handleOnChange(event, 'formato')}>
+                            {
+                                listaFormatos.map(element =>
+                                    <option key={element.idFormato} value={element.idFormato}>{element.nombre}</option>
+                                )
+                            }
+                            {!id && <option key={0} value="">Seleccione</option>}
+                            {id && <select key={0} value={libro.formato}></select>}
+                        </Form.Control>
+
                     </Form.Group>
 
                     <Form.Group>
