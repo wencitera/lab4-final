@@ -9,10 +9,6 @@ export function LibroForm() {
     const [listaEditoriales, setListaEditoriales] = useState([])
     const [listaAutores, setListaAutores] = useState([])
     const history = useHistory()
-    const [editorial, setEditorial] = useState({
-        idEditorial: '',
-        nombre: ''
-    })
 
     const [libro, setLibro] = useState({
         idLibro: '',
@@ -37,10 +33,6 @@ export function LibroForm() {
         if (id) {
             axios.get(`http://localhost:5000/libros/${id}`)
                 .then((response) => setLibro(response.data))
-                .catch((error) => alert(error))
-
-            axios.get(`http://localhost:5000/editoriales/${libro.idEditorial}`)
-                .then((response) => setEditorial(response.data))
                 .catch((error) => alert(error))
         }
     }, [])
@@ -130,25 +122,12 @@ export function LibroForm() {
         } else {
             autoresId += `,${id}`
         }
-        console.log(autoresId)
         setLibro({
             ...libro,
             idAutor: autoresId
         })
     }
 
-    function isChecked(autores, apellido, nombre) {
-        var listaAutores = autores.split(', ')
-        //console.log(listaAutores)
-        //console.log(apellido,nombre)
-        //console.log(listaAutores.includes(`${nombre} ${apellido}`))
-        if (listaAutores.includes(`${nombre} ${apellido}`)) {
-            document.getElementById(`${apellido}-${nombre}`).checked = true;
-        } else {
-            //var checkbox = await document.getElementById(`${apellido}-${nombre}`);
-            //checkbox.checked = false;
-        }
-    }
 
     return (
         <>
@@ -215,7 +194,6 @@ export function LibroForm() {
                                     label={`(${autor.idAutor}) ${autor.apellido}, ${autor.nombre}`}
                                     onChange={() => handleModificarAutor(autor.idAutor)}
                                     id={`${autor.apellido}-${autor.nombre}`}
-                                    onLoad={() => isChecked(libro.idAutor, autor.apellido, autor.nombre)}
                                 />
                             </>
                         ))}
