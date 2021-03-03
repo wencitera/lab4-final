@@ -2,7 +2,7 @@ from dominio.formato import Formato
 from datos import db
 import json
 
-class EditorialRepo():
+class FormatoRepo():
     def get_all(self):
         return Formato.query.all()
        
